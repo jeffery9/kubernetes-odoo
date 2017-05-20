@@ -40,6 +40,6 @@ spec:
   # type: LoadBalancer
   ports:
     # the port that this service should serve on
-  - port: 80
+  - port: 8069
   selector:
     app: odoo-server
