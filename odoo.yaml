@@ -1,0 +1,44 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: odoo-server 
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: odoo-server 
+    spec:
+      containers:
+      - name: odoo-server 
+        image: odoo
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        env:
+        - name: DB_PORT_5432_TCP_ADDR
+          value: "localhost"
+        - name: DB_PORT_5432_TCP_PORT
+          value: "5432"
+        - name: DB_ENV_POSTGRES_USER
+          value: "odoo"
+        - name: DB_ENV_POSTGRES_PASSWORD
+          value: "1234"
+        ports:
+        - containerPort: 8069apiVersion: v1
+---
+kind: Service
+metadata:
+  name: odoo-server
+  labels:
+    app: odoo-server
+spec:
+  # if your cluster supports it, uncomment the following to automatically create
+  # an external load-balanced IP for the frontend service.
+  # type: LoadBalancer
+  ports:
+    # the port that this service should serve on
+  - port: 80
+  selector:
+    app: odoo-server
